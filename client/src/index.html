@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .container { max-width: 300px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+        .register-link { color: blue; cursor: pointer; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <p class="register-link" onclick="redirectToRegister()">Don't have an account? Register here</p>
+    </div>
+
+    <script>
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+           
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            const user = users.find(user => user.email === email && user.password === password);
+
+            if (user) {
+                alert('Login successful!');
+                window.location.href = "home.html"; 
+            } else {
+                alert('Invalid email or password.');
+            }
+        }
+
+        function redirectToRegister() {
+            window.location.href = "register.html";
+        }
+    </script>
+</body>
+</html>
