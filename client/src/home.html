@@ -5,22 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        .container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); }
-        .logout-btn { padding: 10px 20px; background-color: red; color: white; border: none; cursor: pointer; margin-top: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .add-to-cart {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .view-cart {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <button class="logout-btn" onclick="logout()">Logout</button>
         <h1>Welcome to the Home Page!</h1>
         <p>You have successfully logged in.</p>
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        
+        <div class="grid">
+            <div class="card"><img src="../public/women.art.jpg" alt="Item 1"><h3>Item 1</h3><button class="add-to-cart" onclick="addToCart('Item 1')">Add to Cart</button></div>
+            <div class="card"><img src="item2.jpg" alt="Item 2"><h3>Item 2</h3><button class="add-to-cart" onclick="addToCart('Item 2')">Add to Cart</button></div>
+            <div class="card"><img src="item3.jpg" alt="Item 3"><h3>Item 3</h3><button class="add-to-cart" onclick="addToCart('Item 3')">Add to Cart</button></div>
+            <div class="card"><img src="item4.jpg" alt="Item 4"><h3>Item 4</h3><button class="add-to-cart" onclick="addToCart('Item 4')">Add to Cart</button></div>
+            <div class="card"><img src="item5.jpg" alt="Item 5"><h3>Item 5</h3><button class="add-to-cart" onclick="addToCart('Item 5')">Add to Cart</button></div>
+            <div class="card"><img src="item6.jpg" alt="Item 6"><h3>Item 6</h3><button class="add-to-cart" onclick="addToCart('Item 6')">Add to Cart</button></div>
+            <div class="card"><img src="item7.jpg" alt="Item 7"><h3>Item 7</h3><button class="add-to-cart" onclick="addToCart('Item 7')">Add to Cart</button></div>
+            <div class="card"><img src="item8.jpg" alt="Item 8"><h3>Item 8</h3><button class="add-to-cart" onclick="addToCart('Item 8')">Add to Cart</button></div>
+            <div class="card"><img src="item9.jpg" alt="Item 9"><h3>Item 9</h3><button class="add-to-cart" onclick="addToCart('Item 9')">Add to Cart</button></div>
+        </div>
+        
+        <button class="view-cart" onclick="viewCart()">View Cart</button>
     </div>
 
     <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function addToCart(item) {
+            cart.push(item);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(item + " has been added to the cart.");
+        }
+
+        function viewCart() {
+            window.location.href = "cart.html";
+        }
+
         function logout() {
             alert("You have been logged out!");
-            window.location.href = "index.html"; 
+            window.location.href = "index.html";
         }
     </script>
 </body>
