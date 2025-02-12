@@ -3,106 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Home - Art Shop</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
+            margin: 0;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
-        .logout-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 10px 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        h1 {
             text-align: center;
         }
-        .card img {
+        .item {
+            display: inline-block;
+            width: 200px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .item img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
         }
-        .add-to-cart {
-            margin-top: 10px;
-            padding: 8px 15px;
-            background-color: green;
+        button {
+            padding: 5px 10px;
+            background-color: #28a745;
             color: white;
             border: none;
             cursor: pointer;
         }
-        .view-cart {
+        button:hover {
+            background-color: #218838;
+        }
+        #cart {
             margin-top: 20px;
-            padding: 10px 20px;
-            background-color: blue;
-            color: white;
-            border: none;
-            cursor: pointer;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <button class="logout-btn" onclick="logout()">Logout</button>
-        <h1>Welcome to the Home Page!</h1>
-        <p>You have successfully logged in.</p>
-        
-        <div class="grid">
-            <div class="card"><img src="../public/women.art.jpg" alt="Item 1"><h3>Item 1</h3><button class="add-to-cart" onclick="addToCart('Item 1')">Add to Cart</button></div>
-            <div class="card"><img src="item2.jpg" alt="Item 2"><h3>Item 2</h3><button class="add-to-cart" onclick="addToCart('Item 2')">Add to Cart</button></div>
-            <div class="card"><img src="item3.jpg" alt="Item 3"><h3>Item 3</h3><button class="add-to-cart" onclick="addToCart('Item 3')">Add to Cart</button></div>
-            <div class="card"><img src="item4.jpg" alt="Item 4"><h3>Item 4</h3><button class="add-to-cart" onclick="addToCart('Item 4')">Add to Cart</button></div>
-            <div class="card"><img src="item5.jpg" alt="Item 5"><h3>Item 5</h3><button class="add-to-cart" onclick="addToCart('Item 5')">Add to Cart</button></div>
-            <div class="card"><img src="item6.jpg" alt="Item 6"><h3>Item 6</h3><button class="add-to-cart" onclick="addToCart('Item 6')">Add to Cart</button></div>
-            <div class="card"><img src="item7.jpg" alt="Item 7"><h3>Item 7</h3><button class="add-to-cart" onclick="addToCart('Item 7')">Add to Cart</button></div>
-            <div class="card"><img src="item8.jpg" alt="Item 8"><h3>Item 8</h3><button class="add-to-cart" onclick="addToCart('Item 8')">Add to Cart</button></div>
-            <div class="card"><img src="item9.jpg" alt="Item 9"><h3>Item 9</h3><button class="add-to-cart" onclick="addToCart('Item 9')">Add to Cart</button></div>
-        </div>
-        
-        <button class="view-cart" onclick="viewCart()">View Cart</button>
+
+    <h1>Welcome to the Art Shop</h1>
+
+    <div id="items"></div>
+
+    <div id="cart">
+        <h3>Your Cart</h3>
+        <p id="cartMessage">No items in your cart.</p>
+        <button onclick="viewCart()">View Cart</button>
     </div>
 
     <script>
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        // Sample items array
+        const items = [
+            { id: 1, name: 'Mona Lisa', price: 500, image: 'https://via.placeholder.com/200x200?text=Mona+Lisa' },
+            { id: 2, name: 'Starry Night', price: 400, image: 'https://via.placeholder.com/200x200?text=Starry+Night' },
+            { id: 3, name: 'The Scream', price: 350, image: 'https://via.placeholder.com/200x200?text=The+Scream' }
+        ];
 
-        function addToCart(item) {
-            cart.push(item);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            alert(item + " has been added to the cart.");
+        // Render items to the page
+        function renderItems() {
+            const itemsContainer = document.getElementById('items');
+            itemsContainer.innerHTML = ''; // Clear the container before re-rendering
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('item');
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" />
+                    <h3>${item.name}</h3>
+                    <p>Price: $${item.price}</p>
+                    <button onclick="addToCart(${item.id})">Add to Cart</button>
+                `;
+                itemsContainer.appendChild(itemElement);
+            });
         }
 
+        // Add item to cart
+        function addToCart(itemId) {
+            const item = items.find(item => item.id === itemId);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if item already exists in the cart
+            const existingItem = cart.find(cartItem => cartItem.id === itemId);
+            if (existingItem) {
+                existingItem.quantity += 1; // Increase quantity if already in cart
+            } else {
+                cart.push({ ...item, quantity: 1 }); // Add item to cart
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartMessage();
+        }
+
+        // Update cart message
+        function updateCartMessage() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartMessage = document.getElementById('cartMessage');
+            
+            if (cart.length === 0) {
+                cartMessage.innerHTML = 'No items in your cart.';
+            } else {
+                cartMessage.innerHTML = `You have ${cart.length} item(s) in your cart.`;
+            }
+        }
+
+        // View cart
         function viewCart() {
-            window.location.href = "cart.html";
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            alert(cart.length === 0 ? 'Your cart is empty.' : JSON.stringify(cart, null, 2));
         }
 
-        function logout() {
-            alert("You have been logged out!");
-            window.location.href = "index.html";
-        }
+        // Initialize the page
+        renderItems();
+        updateCartMessage();
     </script>
 </body>
 </html>
